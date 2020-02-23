@@ -30,11 +30,19 @@ Make sure the `php-intl` extension is installed and enabled by checking both `ph
 composer require salarmehr/cosmopolitan
 ~~~ 
 
+Set the Locale identifier (langauge_COUNTRY) and you are ready to go
+~~~php
+use Salarmehr\Cosmopolitan\Intl;
+
+echo Intl::create('fr')->spellout(5000000); // prints: "cinq millions"
+echo Intl::create('en_US')->money(11000.4,'USD'); // prints: "$11,000.40"
+~~~
+
 Example
 --------
 The following example demonstrates a subset of available functions.
 Please check the  `\src\Intl.php` to find out all available features.
-~~~~~php
+~~~php
 <?php
 // example.php
 require_once 'vendor/autoload.php';
@@ -42,6 +50,9 @@ require_once 'vendor/autoload.php';
 use Salarmehr\Cosmopolitan\Intl;
 
 $time = time();
+
+// Locale identifier, Timezone, Currency code
+// just time zone and currey are optional.
 $locales = [
     ['en_AU', 'Australia/Sydney', 'AUD'],
     ['en_UK', 'Europe/London', 'GBP'],
@@ -55,7 +66,11 @@ foreach ($locales as $locale) {
     $intl = new Intl($locale[0], $locale[1]);
     // or use the helper $intl=intl($locale[0],$local[1]);
 
-    echo "Localising some values for: " . $intl->language($locale[0]) . " (" . $intl->country($locale[0]) . ")" . "\n";
+    $language = $intl->language($locale[0]);
+    $country = $intl->country($locale[0]);
+
+    echo "Localising some values for:  $language  ($country )" . "\n";
+
     echo $intl->spellout(10000000001) . "\n";
     echo $intl->ordinal(2) . "\n";
     echo $intl->quote("Quoted text!") . "\n";
@@ -72,7 +87,7 @@ foreach ($locales as $locale) {
     echo $intl->date($time, 'full') . "\n";
     echo PHP_EOL;
 }
-~~~~~~
+~~~
 will output:
 ~~~~
 Localising some values for: English (Australia)

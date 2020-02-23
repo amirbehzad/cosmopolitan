@@ -5,6 +5,9 @@ require_once 'vendor/autoload.php';
 use Salarmehr\Cosmopolitan\Intl;
 
 $time = time();
+
+// Locale identifier, Timezone, Currency code
+// just time zone and currey are optional.
 $locales = [
     ['en_AU', 'Australia/Sydney', 'AUD'],
     ['en_UK', 'Europe/London', 'GBP'],
@@ -18,7 +21,11 @@ foreach ($locales as $locale) {
     $intl = new Intl($locale[0], $locale[1]);
     // or use the helper $intl=intl($locale[0],$local[1]);
 
-    echo "Localising some values for: " . $intl->language($locale[0]) . " (" . $intl->country($locale[0]) . ")" . "\n";
+    $language = $intl->language($locale[0]);
+    $country = $intl->country($locale[0]);
+
+    echo "Localising some values for:  $language  ($country )" . "\n";
+
     echo $intl->spellout(10000000001) . "\n";
     echo $intl->ordinal(2) . "\n";
     echo $intl->quote("Quoted text!") . "\n";
